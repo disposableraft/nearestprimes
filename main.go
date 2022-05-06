@@ -75,9 +75,17 @@ func findNeighborPrimes(x int, limit int) map[int]struct{} {
 }
 
 func isPrime(x int) bool {
+	if x == 2 {
+		return true
+	}
+
+	if x%2 == 0 {
+		return false
+	}
+
 	limit := math.Round(math.Sqrt(float64(x)))
-	// bug here where 4 was prime because < 4
-	for i := 2; i <= int(limit); i++ {
+
+	for i := 3; i <= int(limit); i += 2 {
 		if x%i == 0 {
 			return false
 		}
