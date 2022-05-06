@@ -35,14 +35,9 @@ func getNearestPrimes(x int, limit int) []int {
 		primes[x] = struct{}{}
 	}
 
-	gp := findGreaterPrimes(x+1, limit)
-	lp := findLesserPrimes(x-1, limit)
+	np := findNeighborPrimes(x, limit)
 
-	for i := range gp {
-		primes[i] = struct{}{}
-	}
-
-	for i := range lp {
+	for i := range np {
 		primes[i] = struct{}{}
 	}
 
@@ -61,30 +56,22 @@ func toSortedSlice(x map[int]struct{}) []int {
 	return p
 }
 
-func findGreaterPrimes(x int, limit int) map[int]struct{} {
+func findNeighborPrimes(x int, limit int) map[int]struct{} {
 	primes := make(map[int]struct{})
 
-	for i := x; ; i++ {
-		if len(primes) == limit {
-			return primes
-		}
+	for i := x + 1; len(primes) < limit; i++ {
 		if isPrime(i) {
 			primes[i] = struct{}{}
 		}
 	}
-}
 
-func findLesserPrimes(x int, limit int) map[int]struct{} {
-	primes := make(map[int]struct{})
-
-	for i := x; ; i-- {
-		if len(primes) == limit {
-			return primes
-		}
+	for i := x - 1; len(primes) < limit*2; i-- {
 		if isPrime(i) {
 			primes[i] = struct{}{}
 		}
 	}
+
+	return primes
 }
 
 func isPrime(x int) bool {
